@@ -4,7 +4,6 @@ Twisted==13.2.0
 altgraph==0.10.2
 autobahn==0.5.14
 bdist-mpkg==0.5.0
-bonjour-py==0.3
 coverage==4.0.2
 dj-database-url==0.3.0
 dj-static==0.0.6
