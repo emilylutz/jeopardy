@@ -24,8 +24,21 @@ class BoardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BoardView, self).get_context_data(**kwargs)
+        num_rows = len(self.game.columns.all())
+        num_cols = len(self.game.columns.all()[0].answers.all())
+        rows = [[None for i in range(num_cols)] for j in range(num_rows)]
+        cur_column = 0
+        for col in self.game.columns.all():
+            for answer in col.answers.all():
+                row = answer.row
+                rows[answer.row][cur_column] = answer
+                print str(answer.row) + ", " + str(cur_column) + ", " + answer.answer
+                print rows
+            cur_column += 1
+        print rows
         context.update({
             'game': self.game,
+            'rows': rows,
             # 'logged_in': logged_in,
             # 'user': self.request.user,
             # 'form': form,
