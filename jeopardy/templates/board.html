@@ -94,6 +94,37 @@ div.ButtonCenter {
    margin: auto;
 }
 
+.boring_button{
+    color: white;
+    background: green;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 100%;
+    margin: auto;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid white;
+    text-decoration: none;
+    padding: 2px 6px 2px 6px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.right_button{
+    margin-top: -50px;
+    float: right;
+    width: inherit;
+}
+
+.left_button{
+    margin-top: -50px;
+    float: left;
+    width: inherit;
+}
+
+
 
 </style>
 </head>
@@ -138,6 +169,8 @@ div.ButtonCenter {
     {% endfor %}
     </div>
 </div>
+
+<a class='boring_button right_button' href="{% url 'reset' game.id %}">Reset Game</a>
 
 </body>
 

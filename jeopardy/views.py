@@ -49,6 +49,28 @@ class BoardView(TemplateView):
         })
         return context
 
+class ResetView(TemplateView):
+    """
+    View a specific answer.
+    """
+    def get(self, request, *args, **kwargs):
+        try:
+            self.game = Game.objects.get(id=kwargs['id'])
+        except Game.DoesNotExist:
+            raise Http404("Game with given id does not exist")
+
+        #set team scores back to zero
+        for team in self.game.teams.all():
+            team.score = 0
+            team.save()
+        #set answers back to unanswered
+        for answer in self.game.answers.all():
+            answer.state = 0
+            answer.save()
+
+        return redirect('board', id=self.game.id)
+
+
 class AnswerView(TemplateView):
     """
     View a specific answer.
