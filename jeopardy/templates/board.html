@@ -72,6 +72,12 @@ td a{
     {% endfor %}
     </table>
 </div>
+{% for team in game.teams.all %}
+    {{ team.name }}: {{ team.score }}
+    </br>
+{% empty %}
+    No teams :(
+{% endfor %}
 </body>
 
 </html>

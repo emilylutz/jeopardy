@@ -2,33 +2,92 @@
 <html>
 <head>
 <style>
-body {
-    background-color: blue;
+div.Answer {
+    width: auto;
+    height: 400px;
+    border: none;
+    background:blue;
     color: white;
-}
-table {
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
-}
-
-th, td {
-    padding: 8px;
-    border: 4px solid black;
-    background-color: blue;
     text-align: center;
-    vertical-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    font-size: 400%;
 }
-
-th {
+div.SelectTeamToAnswer {
+    width: auto;
+    height: Auto;
+    border: none;
+    background:blue;
+    color: lightblue;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 150%;
+}
+div.TeamList {
+    width: auto;
+    height: Auto;
+    border: none;
+    background:blue;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+p.MiddleAlign  {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.TeamButton{
     color: white;
-    border-bottom: 8px solid black;
+    background: red;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 200%;
+    margin: auto;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid white;
+    text-decoration: none;
+    padding: 2px 6px 2px 6px;
+    display: block;
+    margin-bottom: 50px;
+}
+div.ButtonCenter {
+   width: 30%;
+   margin: auto;
 }
 
-td{
-    color: goldenrod;
+.boring_button{
+    color: white;
+    background: green;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 200%;
+    margin: auto;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid white;
+    text-decoration: none;
+    padding: 2px 6px 2px 6px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.right_button{
+    margin-top: -50px;
+    float: right;
+    width: inherit;
+}
+
+.left_button{
+    margin-top: -50px;
+    float: left;
+    width: inherit;
 }
 
 </style>
@@ -37,15 +96,23 @@ td{
 </script>
 </head>
 <body>
-<div>
-    Answer: {{ answer.answer }}
-</div>
-<div>
-    Value: {{ answer.value }}
-</div>
 
-<a href="{% url 'answer_wrong' game.id answer.id team.id %}">Wrong</a>
-<a href="{% url 'answer_correct' game.id answer.id team.id %}">Correct</a>
+<body>
+    <div class='Answer'>
+        <p class="MiddleAlign"> {{ answer.answer }} </p>
+    </div>
+
+    <div class='SelectTeamToAnswer'>
+    Team to Answer:
+    </div>
+    <div class="TeamList">
+        <div class="ButtonCenter">
+            <span class="TeamButton">{{ team.name }}: {{ team.score }}</span>
+        </div>
+    <a class='boring_button left_button' href="{% url 'answer_wrong' game.id answer.id team.id %}">Wrong</a>
+    <a class='boring_button right_button' href="{% url 'answer_correct' game.id answer.id team.id %}">Correct</a>
+    </div>
+
 
 </body>
 
