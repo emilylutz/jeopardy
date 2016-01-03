@@ -17,13 +17,14 @@ class GameView(TemplateView):
             self.game = Game.objects.get(id=kwargs['id'])
         except Game.DoesNotExist:
             raise Http404("Game with given id does not exist")
+        self.is_student = kwargs['is_student']
 
         if self.game.game_state == 1:
-            return redirect('board', id=self.game.id)
+            return redirect('board', is_student=self.is_student, id=self.game.id)
         if self.game.game_state == 2:
-            return redirect('answer', game_id=self.game.id, answer_id=self.game.cur_answer_id)
+            return redirect('answer', is_student=self.is_student, game_id=self.game.id, answer_id=self.game.cur_answer_id)
         if self.game.game_state == 3:
-            return redirect('select_team', game_id=self.game.id, answer_id=self.game.cur_answer_id, team_id=self.game.cur_team_id)
+            return redirect('select_team', is_student=self.is_student, game_id=self.game.id, answer_id=self.game.cur_answer_id, team_id=self.game.cur_team_id)
 
 class BoardView(TemplateView):
     """
@@ -36,6 +37,8 @@ class BoardView(TemplateView):
             self.game = Game.objects.get(id=kwargs['id'])
         except Game.DoesNotExist:
             raise Http404("Game with given id does not exist")
+        self.is_student = kwargs['is_student']
+
         return super(BoardView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -52,9 +55,12 @@ class BoardView(TemplateView):
                 print rows
             cur_column += 1
         print rows
+        print self.is_student
         context.update({
             'game': self.game,
             'rows': rows,
+            'columns': self.game.columns.all(),
+            'is_student': self.is_student,
             # 'logged_in': logged_in,
             # 'user': self.request.user,
             # 'form': form,
@@ -63,6 +69,8 @@ class BoardView(TemplateView):
             # 'num_reviews': num_reviews,
             # 'bookmarked': bookmarked
         })
+
+
         return context
 
 class ResetView(TemplateView):
@@ -74,17 +82,19 @@ class ResetView(TemplateView):
             self.game = Game.objects.get(id=kwargs['id'])
         except Game.DoesNotExist:
             raise Http404("Game with given id does not exist")
+        self.is_student = kwargs['is_student']
+        if self.is_student == '0': #is teacher
 
-        #set team scores back to zero
-        for team in self.game.teams.all():
-            team.score = 0
-            team.save()
-        #set answers back to unanswered
-        for answer in self.game.answers.all():
-            answer.state = 0
-            answer.save()
+            #set team scores back to zero
+            for team in self.game.teams.all():
+                team.score = 0
+                team.save()
+            #set answers back to unanswered
+            for answer in self.game.answers.all():
+                answer.state = 0
+                answer.save()
 
-        return redirect('board', id=self.game.id)
+        return redirect('game', is_student=self.is_student, id=self.game.id)
 
 
 class AnswerView(TemplateView):
@@ -103,6 +113,8 @@ class AnswerView(TemplateView):
         except Answer.DoesNotExist:
             raise Http404("Answer with given id does not exist")
 
+        self.is_student = kwargs['is_student']
+
         self.game.game_state = 2
         self.game.cur_answer_id = self.answer.id
         self.game.save()
@@ -114,7 +126,8 @@ class AnswerView(TemplateView):
         context.update({
             'game': self.game,
             'answer': self.answer,
-            'teams': self.game.teams.all()
+            'teams': self.game.teams.all(),
+            'student': self.is_student,
         })
         return context
 
@@ -135,13 +148,14 @@ class WrongAnswerView(TemplateView):
             self.team = Team.objects.get(id=kwargs['team_id'])
         except Answer.DoesNotExist:
             raise Http404("Team with given id does not exist")
+        self.is_student = kwargs['is_student']
+        if self.is_student == '0':
+            self.team.score = self.team.score - self.answer.value
+            self.team.save()
+            self.game.game_state = 2
+            self.game.save()
 
-        self.team.score = self.team.score - self.answer.value
-        self.team.save()
-        self.game.game_state = 2
-        self.game.save()
-
-        return redirect('answer', game_id=self.game.id, answer_id=self.answer.id)
+        return redirect('game', is_student=self.is_student, id=self.game.id)
 
 class CorrectAnswerView(TemplateView):
     """
@@ -162,17 +176,19 @@ class CorrectAnswerView(TemplateView):
             self.team = Team.objects.get(id=kwargs['team_id'])
         except Answer.DoesNotExist:
             raise Http404("Team with given id does not exist")
+        self.is_student = kwargs['is_student']
 
-        self.team.score = self.team.score + self.answer.value
-        self.team.save()
+        if self.is_student == '0':
+            self.team.score = self.team.score + self.answer.value
+            self.team.save()
 
-        self.answer.state = 1
-        self.answer.save()
+            self.answer.state = 1
+            self.answer.save()
 
-        self.game.game_state = 1
-        self.game.save()
+            self.game.game_state = 1
+            self.game.save()
 
-        return redirect('board', id=self.game.id)
+        return redirect('game', is_student=self.is_student, id=self.game.id)
 
 class TeamSelectedAnswerView(TemplateView):
     """
@@ -193,6 +209,7 @@ class TeamSelectedAnswerView(TemplateView):
             self.team = Team.objects.get(id=kwargs['team_id'])
         except Answer.DoesNotExist:
             raise Http404("Team with given id does not exist")
+        self.is_student = kwargs['is_student']
 
         self.game.game_state = 3
         self.game.cur_team_id = self.team.id
@@ -205,6 +222,7 @@ class TeamSelectedAnswerView(TemplateView):
         context.update({
             'game': self.game,
             'answer': self.answer,
-            'team': self.team
+            'team': self.team,
+            'is_student': self.is_student
         })
         return context

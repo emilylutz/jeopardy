@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="refresh" content="1;url={% url 'game' is_student game_id %}">
+
 <style>
 body {
     background-color: blue;
@@ -74,18 +76,23 @@ div.ButtonCenter {
         <p class="MiddleAlign"> {{ answer.answer }} </p>
     </div>
 
+    {% if is_student == '0' %}
     <div class='SelectTeamToAnswer'>
     Select Team to Answer:
     </div>
     <div class="TeamList">
         <div class="ButtonCenter">
         {% for team in teams %}
-            <a class="TeamButton" href="{% url 'select_team' game.id answer.id team.id%}">{{ team.name }}: {{ team.score }}</a>
+            <a class="TeamButton" href="{% url 'select_team' is_student game.id answer.id team.id%}">{{ team.name }}: {{ team.score }}</a>
         {% empty %}
             No teams
         {% endfor %}
         </div>
     </div>
+    {% else %}
+    <a class="TeamButton" href="{% url 'select_team' is_student game.id answer.id 1 %}">Tap to Answer</a>
+    {% endif %}
+
 </body>
 
 </html>

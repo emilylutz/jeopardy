@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+{% if is_student == '1' %}
+<meta http-equiv="refresh" content="1;url={% url 'game' is_student id %}">
+{% endif %}
 <style>
 
 body {
@@ -132,7 +135,7 @@ div.ButtonCenter {
 <div style="overflow-x:auto;">
     <table>
     <tr>
-    {% for col in game.columns.all %}
+    {% for col in columns %}
             <th class="col">
                 {{ col.name }}
             </th>
@@ -147,7 +150,7 @@ div.ButtonCenter {
             <td>
                 {% if answer.state == 0 %}
                     <div class='answer'>
-                    <a href="{% url 'answer' game.id answer.id %}">{{ answer.value }}</a>
+                    <a href="{% url 'answer' is_student game.id answer.id %}">{{ answer.value }}</a>
                     </div>
                 {% else %}
                     <div class='answer'>
@@ -169,8 +172,9 @@ div.ButtonCenter {
     {% endfor %}
     </div>
 </div>
-
-<a class='boring_button right_button' href="{% url 'reset' game.id %}">Reset Game</a>
+{% if is_student == '0' %}
+<a class='boring_button right_button' href="{% url 'reset' is_student game.id %}">Reset Game</a>
+{% endif %}
 
 </body>
 
