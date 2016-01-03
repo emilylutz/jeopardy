@@ -37,10 +37,6 @@ td a{
     text-decoration: none;
 }
 
-.answered {
-    background-color: gray;
-}
-
 div.Answer {
     width: auto;
     height: 400px;
@@ -104,7 +100,6 @@ div.ButtonCenter {
 <body>
 <div style="overflow-x:auto;">
     <table>
-    <caption>Name: {{ game.name }}</caption>
     <tr>
     {% for col in game.columns.all %}
             <th class="col">
@@ -124,8 +119,8 @@ div.ButtonCenter {
                     <a href="{% url 'answer' game.id answer.id %}">{{ answer.value }}</a>
                     </div>
                 {% else %}
-                    <div class='answer answered'>
-                    {{ answer.value }}
+                    <div class='answer'>
+                        <p></p>
                     </div>
                 {% endif %}
             </td>
