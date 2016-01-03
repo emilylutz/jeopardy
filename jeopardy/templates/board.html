@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-{% if is_student == '1' %}
-<meta http-equiv="refresh" content="1;url={% url 'game' is_student id %}">
-{% endif %}
+<meta http-equiv="refresh" content="3;url={% url 'game' is_student id %}">
 <style>
 
 body {
@@ -131,6 +129,7 @@ div.ButtonCenter {
 
 
 </style>
+
 </head>
 <body>
 <div style="overflow-x:auto;">
