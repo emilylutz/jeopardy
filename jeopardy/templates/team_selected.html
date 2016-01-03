@@ -113,8 +113,8 @@ div.ButtonCenter {
             <span class="TeamButton">{{ team.name }}: {{ team.score }}</span>
         </div>
     {% if is_student = '0' %}
-    <a class='boring_button left_button' href="{% url 'answer_wrong' is_student game.id answer.id team.id %}">Wrong</a>
-    <a class='boring_button right_button' href="{% url 'answer_correct' is_student game.id answer.id team.id %}">Correct</a>
+    <a class='boring_button left_button' href="{% url 'answer_wrong' is_student game.id team.id %}">Wrong</a>
+    <a class='boring_button right_button' href="{% url 'answer_correct' is_student game.id team.id %}">Correct</a>
     {% endif %}
     </div>
 

@@ -24,7 +24,7 @@ class GameView(TemplateView):
         if self.game.game_state == 2:
             return redirect('answer', is_student=self.is_student, game_id=self.game.id, answer_id=self.game.cur_answer_id)
         if self.game.game_state == 3:
-            return redirect('select_team', is_student=self.is_student, game_id=self.game.id, answer_id=self.game.cur_answer_id, team_id=self.game.cur_team_id)
+            return redirect('select_team', is_student=self.is_student, game_id=self.game.id, team_id=self.game.cur_team_id)
 
 class BoardView(TemplateView):
     """
@@ -94,6 +94,8 @@ class ResetView(TemplateView):
                 answer.state = 0
                 answer.save()
 
+            self.game.state = 1
+
         return redirect('game', is_student=self.is_student, id=self.game.id)
 
 
@@ -141,7 +143,7 @@ class WrongAnswerView(TemplateView):
         except Game.DoesNotExist:
             raise Http404("Game with given id does not exist")
         try:
-            self.answer = Answer.objects.get(id=kwargs['answer_id'])
+            self.answer = Answer.objects.get(id=self.game.cur_answer_id)
         except Answer.DoesNotExist:
             raise Http404("Answer with given id does not exist")
         try:
@@ -169,7 +171,7 @@ class CorrectAnswerView(TemplateView):
         except Game.DoesNotExist:
             raise Http404("Game with given id does not exist")
         try:
-            self.answer = Answer.objects.get(id=kwargs['answer_id'])
+            self.answer = Answer.objects.get(id=self.game.cur_answer_id)
         except Answer.DoesNotExist:
             raise Http404("Answer with given id does not exist")
         try:
@@ -202,7 +204,7 @@ class TeamSelectedAnswerView(TemplateView):
         except Game.DoesNotExist:
             raise Http404("Game with given id does not exist")
         try:
-            self.answer = Answer.objects.get(id=kwargs['answer_id'])
+            self.answer = Answer.objects.get(id=self.game.cur_answer_id)
         except Answer.DoesNotExist:
             raise Http404("Answer with given id does not exist")
         try:
@@ -226,3 +228,4 @@ class TeamSelectedAnswerView(TemplateView):
             'is_student': self.is_student
         })
         return context
+

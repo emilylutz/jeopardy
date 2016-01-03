@@ -79,14 +79,14 @@ div.ButtonCenter {
     <div class="TeamList">
         <div class="ButtonCenter">
         {% for team in teams %}
-            <a class="TeamButton" href="{% url 'select_team' is_student game.id answer.id team.id%}">{{ team.name }}: {{ team.score }}</a>
+            <a class="TeamButton" href="{% url 'select_team' is_student game.id team.id%}">{{ team.name }}: {{ team.score }}</a>
         {% empty %}
             No teams
         {% endfor %}
         </div>
     </div>
     {% else %}
-    <a class="TeamButton" href="{% url 'select_team' is_student game.id answer.id 1 %}">Tap to Answer</a>
+    <a class="TeamButton" href="{% url 'select_team' is_student game.id 1 %}">Tap to Answer</a>
     {% endif %}
 
 </body>

@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^(?P<is_student>\d+)/(?P<id>\d+)/board$', BoardView.as_view(), name='board'),
     url(r'^(?P<is_student>\d+)/(?P<id>\d+)/reset$', ResetView.as_view(), name='reset'),
     url(r'^(?P<is_student>\d+)/(?P<game_id>\d+)/(?P<answer_id>\d+)$', AnswerView.as_view(), name='answer'),
-    url(r'^(?P<is_student>\d+)/(?P<game_id>\d+)/(?P<answer_id>\d+)/(?P<team_id>\d+)/$', TeamSelectedAnswerView.as_view(), name='select_team'),
-    url(r'^(?P<is_student>\d+)/(?P<game_id>\d+)/(?P<answer_id>\d+)/(?P<team_id>\d+)/wrong/$', WrongAnswerView.as_view(), name='answer_wrong'),
-    url(r'^(?P<is_student>\d+)/(?P<game_id>\d+)/(?P<answer_id>\d+)/(?P<team_id>\d+)/correct/$', CorrectAnswerView.as_view(), name='answer_correct'),
+    url(r'^(?P<is_student>\d+)/(?P<game_id>\d+)/(?P<team_id>\d+)/team_selected$', TeamSelectedAnswerView.as_view(), name='select_team'),
+    url(r'^(?P<is_student>\d+)/(?P<game_id>\d+)/(?P<team_id>\d+)/wrong/$', WrongAnswerView.as_view(), name='answer_wrong'),
+    url(r'^(?P<is_student>\d+)/(?P<game_id>\d+)/(?P<team_id>\d+)/correct/$', CorrectAnswerView.as_view(), name='answer_correct'),
 ]
