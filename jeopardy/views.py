@@ -48,3 +48,28 @@ class BoardView(TemplateView):
             # 'bookmarked': bookmarked
         })
         return context
+
+class AnswerView(TemplateView):
+    """
+    View a specific answer.
+    """
+    template_name = 'answer.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.game = Game.objects.get(id=kwargs['game_id'])
+        except Game.DoesNotExist:
+            raise Http404("Game with given id does not exist")
+        try:
+            self.answer = Answer.objects.get(id=kwargs['answer_id'])
+        except Answer.DoesNotExist:
+            raise Http404("Answer with given id does not exist")
+        return super(AnswerView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(AnswerView, self).get_context_data(**kwargs)
+        context.update({
+            'game': self.game,
+            'answer': self.answer,
+        })
+        return context

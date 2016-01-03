@@ -30,9 +30,6 @@ td{
 </style>
 </head>
 <body>
-Board
-</br>
-</br>
 <div style="overflow-x:auto;">
     <table>
     <caption>Name: {{ game.name }}</caption>
@@ -51,7 +48,7 @@ Board
         {% for answer in row %}
             <td>
                 <div class='answer'>
-                {{ answer.answer }}
+                {{ answer.value }}
                 </div>
             </td>
         {% endfor %}

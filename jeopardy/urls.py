@@ -23,4 +23,6 @@ from jeopardy.views import *
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
-    url(r'^(?P<id>\d+)/$', BoardView.as_view(), name='board'),]
+    url(r'^(?P<id>\d+)/$', BoardView.as_view(), name='board'),
+    url(r'^(?P<game_id>\d+)/(?P<answer_id>\d+)$', AnswerView.as_view(), name='answer'),
+]
