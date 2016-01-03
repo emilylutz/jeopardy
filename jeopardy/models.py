@@ -14,6 +14,8 @@ class Game(models.Model):
 
     name = models.CharField(max_length=128)
     game_state = models.IntegerField(choices=GAME_STATES)
+    cur_answer_id = models.IntegerField(blank=True, null=True)
+    cur_team_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'jeopardy game'
