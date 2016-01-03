@@ -146,15 +146,7 @@ class CorrectAnswerView(TemplateView):
         self.answer.state = 1
         self.answer.save()
 
-        return super(CorrectAnswerView, self).get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(CorrectAnswerView, self).get_context_data(**kwargs)
-        context.update({
-            'game': self.game,
-            'answer': self.answer,
-        })
-        return context
+        return redirect('board', id=self.game.id)
 
 class TeamSelectedAnswerView(TemplateView):
     """
