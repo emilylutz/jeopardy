@@ -38,19 +38,19 @@ td{
 </head>
 <body>
 <div>
-    Answer: {{ answer.answer }}
+    Correct!
+</div>
+<div>
+    {{ answer.question }}
+</div>
+<div>
+    {{ answer.answer }}
 </div>
 <div>
     Value: {{ answer.value }}
 </div>
 
-
-Select team:
-{% for team in teams %}
-    <a href="{% url 'select_team' game.id answer.id team.id%}">{{ team.name }} - {{ team.score }}</a>
-{% empty %}
-    No teams :(
-{% endfor %}
+<a href="{% url 'board' game.id %}">Continue</a>
 
 </body>
 

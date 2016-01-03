@@ -33,7 +33,7 @@ class Team(models.Model):
         verbose_name_plural = 'teams'
 
     def __unicode__(self):
-        return self.game.name + " - " + name
+        return self.game.name + " - " + self.name
 
 class Column(models.Model):
     name = models.CharField(max_length=128)
@@ -47,12 +47,18 @@ class Column(models.Model):
         return self.game.name + " - " + self.name
 
 class Answer(models.Model):
+    ANSWER_STATES = (
+        (0, 'Not Answered'),
+        (1, 'Answered'),
+    )
+
     answer = models.CharField(max_length=128)
     question = models.CharField(max_length=128)
     value = models.IntegerField()
     row = models.IntegerField()
     column = models.ForeignKey(Column, related_name="answers")
     game = models.ForeignKey(Game, related_name="answers")
+    state = models.IntegerField(choices=ANSWER_STATES, default=0)
 
     class Meta:
         verbose_name = 'answer'

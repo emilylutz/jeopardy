@@ -24,9 +24,19 @@ th {
     border-bottom: 8px solid black;
 }
 
-td{
+td {
     color: goldenrod;
 }
+
+td a{
+    color: inherit;
+    text-decoration: none;
+}
+
+.answered {
+    background-color: gray;
+}
+
 </style>
 </head>
 <body>
@@ -47,9 +57,15 @@ td{
         <tr>
         {% for answer in row %}
             <td>
-                <div class='answer'>
-                {{ answer.value }}
-                </div>
+                {% if answer.state == 0 %}
+                    <div class='answer'>
+                    <a href="{% url 'answer' game.id answer.id %}">{{ answer.value }}</a>
+                    </div>
+                {% else %}
+                    <div class='answer answered'>
+                    {{ answer.value }}
+                    </div>
+                {% endif %}
             </td>
         {% endfor %}
         </tr>

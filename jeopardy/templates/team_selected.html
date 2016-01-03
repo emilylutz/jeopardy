@@ -44,13 +44,8 @@ td{
     Value: {{ answer.value }}
 </div>
 
-
-Select team:
-{% for team in teams %}
-    <a href="{% url 'select_team' game.id answer.id team.id%}">{{ team.name }} - {{ team.score }}</a>
-{% empty %}
-    No teams :(
-{% endfor %}
+<a href="{% url 'answer_wrong' game.id answer.id team.id %}">Wrong</a>
+<a href="{% url 'answer_correct' game.id answer.id team.id %}">Correct</a>
 
 </body>
 
