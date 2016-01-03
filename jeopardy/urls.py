@@ -13,9 +13,14 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, patterns, url
+from django.views.generic import TemplateView
+
 from django.contrib import admin
+from jeopardy.views import *
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-]
+    url(r'^$', TemplateView.as_view(template_name='index.html'), name="index"),
+    url(r'^(?P<id>\d+)/$', BoardView.as_view(), name='board'),]

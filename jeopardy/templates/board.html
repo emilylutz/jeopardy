@@ -1,0 +1,24 @@
+Board
+</br>
+</br>
+<table>
+<caption>Name: {{ game.name }}</caption>
+{% for col in game.columns.all %}
+    <td>
+        <table>
+            <thead class="col">
+                {{ col.name }}
+            </thead>
+            {% for answer in col.answers.all %}
+                <tr>
+                    {{ answer }},
+                </tr>
+            {% empty %}
+                <tr>No answers.</tr>
+            {% endfor %}
+        </table>
+    </td>
+{% empty %}
+    <td><table class='col'>No columns.</table></td>
+{% endfor %}
+</table>

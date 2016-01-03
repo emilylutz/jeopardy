@@ -14,9 +14,12 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import dj_database_url
 
+# SETTINGS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'jeopardy')
+
+# BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'jeopardy')
+SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -39,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jeopardy',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,7 +61,7 @@ ROOT_URLCONF = 'jeopardy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(SETTINGS_PATH, 'templates'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
