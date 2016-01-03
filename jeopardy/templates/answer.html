@@ -64,6 +64,67 @@ div.ButtonCenter {
 
 </style>
 <script>
+    var urlPrefix = "https://systest.digitallife.att.com/";
+    var authHeaders = {"appKey": 'TE_D8AF76B1E10060BE_1', "requestToken": '9ca712353f00121c7e1a56f9c006f7d', "authToken": 'bdead28cc4c49df0de48160fa5b7fb50e9f5d96ed7dfb84dbd6b1af0c7778f534f29ef400270bf34616774c148b683d32be5347fbf4fc5e7cc1dc37e106d674ceade55e7c9a4da071378776240a1cb4d47fdffe7fb04b39666c23acd80cd374c357dbe66f13529ef33e37121'};
+    var gatewayGuid = 'DC1282E6A0EC45EBB29DA9E23B6B0ED1'; //Fill in
+    var pub = {"eserviceAttempts": 1}, delimiter = '"""', maxPointer = 0;
+
+    function httpGetAsync(theUrl, callback)
+    {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous
+        xmlHttp.send(null);
+    }
+
+    pub.setUpConnection = function () {
+        console.log("connection getting set up");
+        var uuid = new Date().getTime(), url = urlPrefix + 'messageRelay/pConnection' + '?uuid=' + authHeaders.authToken + '&app2=' + delimiter + '&key=' + gatewayGuid;
+
+        maxPointer = 0;
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            try {
+                if (xhr.readyState === 3) { //data ready
+                    var res = xhr.responseText.substring(maxPointer);
+                    if (res.indexOf(delimiter) > -1) {
+                        console.log(xhr.responseText);
+                        if(xhr.responseText.indexOf('close') > -1 || xhr.responseText.indexOf('open') > -1){
+                            console.log("BZZZZZ");
+                            httpGetAsync('{% url 'select_team' is_student game.id 2 %}', function(){
+                                console.log("team 2 selected");
+                            });
+
+                            // $.get('/{{ is_student }}/{{ game.id }}/2/team_selected', function(data){
+                //             console.log("team 2 selected")
+                // });
+                        }
+
+                        // maxPointer = xhr.responseText.length;
+                        // pub.parseAndDelegate(res);
+                    }
+                }
+                if (xhr.readyState === 4) { //service quit
+                    if (pub.eserviceAttempts <= 5) {
+                        pub.eserviceAttempts++;
+                        //console.log('eService quit on us with state 4.  About to connect again..');
+                        setTimeout(pub.setUpConnection, 5000);
+                    } else {
+                        //console.log('Something went horribly wrong with eService');
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        xhr.open('GET', url, true);
+        xhr.send();
+    };
+
+    pub.setUpConnection();
 
 </script>
 </head>
